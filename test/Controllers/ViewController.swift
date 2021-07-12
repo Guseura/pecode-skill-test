@@ -1,65 +1,64 @@
-//
-//  ViewController.swift
-//  test
-//
-//  Created by Yurij on 21.03.2021.
-//
 
 import UIKit
+import SystemConfiguration
+import CoreData
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController {
     
-    //MARK: - Main tableView
     @IBOutlet weak var tableView: UITableView!
-    
-    //MARK - Search bar to search by ket words
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     let newsCellID = "NewsTableViewCell"
     
-    var listOfNews = [News]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var memoryNews:[News]?
     
     let wkViewController = WKViewController()
-    let newsManager = NewsManager()
     let newsNetwork = NewsNetwork()
     
-    var searchQuery: String = "" {
-        didSet {
-            fetchNews()
-        }
-    }
-    var currentCountry: Country? = .de {
-        didSet {
-            fetchNews()
-        }
-    }
-    var currentCategory: Category? = .business {
-        didSet {
-            fetchNews()
-        }
-    }
+    var listOfNews = [NewsJSON]()
+    var currentCountry: Country? = .us
+    var currentCategory: Category? = .general
+    
+    var searchQuery: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.delegate = self
-        
-        //MARK: - Register Cell
         let nibCell = UINib(nibName: newsCellID, bundle: nil)
         tableView.register(nibCell, forCellReuseIdentifier: newsCellID)
         
-        fetchNews()
-        
         tableView.delegate = self
-        
-        //MARK: - Refresh action
         tableView.refreshControl = tableRefreshControl
+        
+        if (isConnectedToNetwork()) {
+            fetchDataNews()
+            deleteNews()
+            fetchNews()
+        } else {
+            fetchDataNews()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if isConnectedToNetwork() {
+            activityView.startAnimating()
+        } else {
+            activityView.isHidden = true
+        }
+    }
+    
+    func fetchDataNews() {
+        do {
+            let request = News.fetchRequest() as NSFetchRequest<News>
+            let pred = NSPredicate(format: "isFavorite == %@", NSNumber(value: false))
+            request.predicate = pred
+            self.memoryNews = try context.fetch(request)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        catch { }
     }
     
     func fetchNews() {
@@ -67,26 +66,75 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             switch result {
             case .success(let newsResponse):
                 self.listOfNews = newsResponse.articles
-                self.newsManager.newsMaxPage = Int(ceil(Double(newsResponse.totalResults) / 20))
+                for news in self.listOfNews {
+                    let newNews = News(context: self.context)
+                    newNews.title = news.title
+                    newNews.descr = news.description
+                    newNews.author = news.author
+                    newNews.isFavorite = false
+                    newNews.source = news.source?.name
+                    newNews.webURL = news.url
+                    
+                    // TODO: - If connected to internet load images to view from web, and loading to data move on foreground to make loading news faster
+                    if news.urlToImage != "" && news.urlToImage != nil {
+                        let imageData = try? Data(contentsOf: URL(string: news.urlToImage!)!)
+                        newNews.image = imageData
+                    }
+                    do {
+                        try self.context.save()
+                    }
+                    catch { }
+                }
+                DispatchQueue.main.async {
+                    if self.activityView.isAnimating {
+                        self.activityView.stopAnimating()
+                        self.activityView.isHidden = true
+                    }
+                }
+                self.fetchDataNews()
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func fetchNewsPage() {
-        newsNetwork.getNews(page: newsManager.getCurrentPage() , query: searchQuery, category: currentCategory, country: currentCountry) { (result) in
-            switch result {
-            case .success(let newsResponse):
-                self.listOfNews.append(contentsOf: newsResponse.articles)
-                self.newsManager.newsMaxPage = Int(ceil(Double(newsResponse.totalResults) / 20))
-            case .failure(let error):
-                print(error)
+    func deleteNews() {
+        if self.memoryNews != nil {
+            for item in self.memoryNews! {
+                self.context.delete(item)
             }
+            do {
+                try self.context.save()
+            }
+            catch { }
+            self.fetchDataNews()
         }
     }
     
-    //MARK: - Оновлення данних в таблиці
+    public func isConnectedToNetwork() -> Bool {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        }) else {
+            return false
+        }
+        
+        var flags: SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+        
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        
+        return (isReachable && !needsConnection)
+    }
+    
     let tableRefreshControl: UIRefreshControl = {
       let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
@@ -94,78 +142,47 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }()
     
     @objc private func refresh(sender: UIRefreshControl) {
-        fetchNews()
+        if isConnectedToNetwork() {
+            activityView.isHidden = false
+            activityView.startAnimating()
+            deleteNews()
+            fetchNews()
+        }
         self.tableView.reloadData()
         sender.endRefreshing()
     }
-    
+}
 
-
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfNews.count
+        if memoryNews == nil{
+            return 0
+        } else {
+            return memoryNews!.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: newsCellID, for: indexPath) as! NewsTableViewCell
         
-        let currentNews = listOfNews[indexPath.row]
-        cell.activityIndicator.startAnimating()
+        let currentNews = memoryNews![indexPath.row]
+
         cell.titleLabel?.text = currentNews.title
-        cell.descriptionLabel?.text = currentNews.description
         cell.authorLabel?.text = currentNews.author
-        cell.sourceLabel?.text = currentNews.source?.name
-        if let imageUrlString = currentNews.urlToImage {
-            if let url = URL(string: imageUrlString) {
-                cell.newsImage?.load(url: url, activityIndicator: cell.activityIndicator)
-            }
-        } else {
-            
+        cell.sourceLabel?.text = currentNews.source
+        cell.isFavorite = false
+        if currentNews.image != nil {
+            cell.newsImage?.image = UIImage(data: currentNews.image!)
         }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if let urlString = listOfNews[indexPath.row].url {
-            wkViewController.urlString = urlString
-            navigationController?.pushViewController(wkViewController, animated: true)
-        }
-    }
-    
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == listOfNews.count - 2, newsManager.getCurrentPage() < newsManager.newsMaxPage {
-            newsManager.setCurrentPage(page: newsManager.getCurrentPage() + 1)
-            fetchNewsPage()
-        }
-    }
-    
-    
-}
-
-extension ViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let searchBarText = searchBar.text else {return}
-        searchQuery = searchBarText
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchQuery = searchText
-    }
-}
-
-extension UIImageView {
-    func load(url: URL, activityIndicator: UIActivityIndicatorView) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                        activityIndicator.stopAnimating()
-                    }
-                }
-            }
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let currentNewsController = storyboard.instantiateViewController(identifier: "CurrentNewsViewController") as? CurrentNewsViewController else { return }
+        currentNewsController.currentNews = memoryNews?[indexPath.row]
+        show(currentNewsController, sender: nil)
     }
 }

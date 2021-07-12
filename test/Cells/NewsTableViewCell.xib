@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,17 +11,24 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsTableViewCell" rowHeight="401" id="KGk-i7-Jjw" customClass="NewsTableViewCell" customModule="test" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="401"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsTableViewCell" rowHeight="295" id="KGk-i7-Jjw" customClass="NewsTableViewCell" customModule="test" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="293"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="401"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="293"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fma-XH-ObD">
-                        <rect key="frame" x="15" y="15" width="290" height="150"/>
+                        <rect key="frame" x="0.0" y="15" width="320" height="150"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="150" id="j5B-eU-keg"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark.fill" catalog="system" highlightedImage="bookmark.fill" translatesAutoresizingMaskIntoConstraints="NO" id="ZKj-hd-Igo">
+                        <rect key="frame" x="277" y="247" width="26" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="5Os-28-i8K"/>
+                            <constraint firstAttribute="width" constant="26" id="mUH-SN-9EO"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="India will reportedly introduce bill to make owning cryptocurrency illegal&quot;" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mne-FI-2MJ">
@@ -30,64 +37,50 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27L-DV-iZV">
-                        <rect key="frame" x="16" y="242" width="288" height="100.5"/>
-                        <string key="text">India’s legislature is reportedly considering a near-total ban on private cryptocurrencies like Bitcoin or Ethereum, including owning the virtual currency. The government has discussed plans for a national digital currency as an alternative.</string>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" systemColor="secondaryLabelColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Verge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jjf-vo-ei9">
-                        <rect key="frame" x="16" y="350" width="288" height="18"/>
+                        <rect key="frame" x="16" y="242" width="253" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adi Robertson" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tk-bu-Kxs">
-                        <rect key="frame" x="16" y="368" width="288" height="18"/>
+                        <rect key="frame" x="16" y="260" width="253" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                         <color key="textColor" systemColor="secondaryLabelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="eJf-Bv-O9y">
-                        <rect key="frame" x="150" y="80" width="20" height="20"/>
-                    </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="eJf-Bv-O9y" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="0oY-Xy-c0a"/>
+                    <constraint firstItem="ZKj-hd-Igo" firstAttribute="leading" secondItem="Jjf-vo-ei9" secondAttribute="trailing" constant="8" symbolic="YES" id="20A-HJ-0bV"/>
+                    <constraint firstItem="ZKj-hd-Igo" firstAttribute="leading" secondItem="6tk-bu-Kxs" secondAttribute="trailing" constant="8" symbolic="YES" id="31C-aB-esQ"/>
                     <constraint firstAttribute="bottomMargin" secondItem="6tk-bu-Kxs" secondAttribute="bottom" constant="4" id="3fT-uq-AXd"/>
-                    <constraint firstItem="27L-DV-iZV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="67D-0Q-2q9"/>
                     <constraint firstItem="fma-XH-ObD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="9hv-RI-EKn"/>
-                    <constraint firstItem="eJf-Bv-O9y" firstAttribute="leading" secondItem="fma-XH-ObD" secondAttribute="trailing" constant="-155" id="9pA-MY-ewm"/>
                     <constraint firstItem="Jjf-vo-ei9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Cty-rU-dTV"/>
                     <constraint firstItem="mne-FI-2MJ" firstAttribute="top" secondItem="fma-XH-ObD" secondAttribute="bottom" constant="8" symbolic="YES" id="EeZ-li-kxm"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Jjf-vo-ei9" secondAttribute="trailing" id="PKb-qP-tT0"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ZKj-hd-Igo" secondAttribute="trailing" constant="1" id="Gng-uA-mok"/>
                     <constraint firstItem="6tk-bu-Kxs" firstAttribute="top" secondItem="Jjf-vo-ei9" secondAttribute="bottom" id="PwA-bZ-rwm"/>
-                    <constraint firstItem="27L-DV-iZV" firstAttribute="top" secondItem="mne-FI-2MJ" secondAttribute="bottom" constant="8" symbolic="YES" id="Tsk-Oq-vLa"/>
-                    <constraint firstItem="Jjf-vo-ei9" firstAttribute="top" secondItem="27L-DV-iZV" secondAttribute="bottom" constant="7.5" id="brr-Ga-HLk"/>
+                    <constraint firstItem="Jjf-vo-ei9" firstAttribute="top" secondItem="mne-FI-2MJ" secondAttribute="bottom" constant="8" symbolic="YES" id="boz-Kz-eFT"/>
                     <constraint firstItem="6tk-bu-Kxs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="cyr-vl-Fz3"/>
-                    <constraint firstItem="27L-DV-iZV" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="hAU-oM-2Ou"/>
-                    <constraint firstItem="eJf-Bv-O9y" firstAttribute="top" secondItem="fma-XH-ObD" secondAttribute="bottom" constant="-85" id="hg9-n3-ghF"/>
-                    <constraint firstAttribute="trailing" secondItem="fma-XH-ObD" secondAttribute="trailing" constant="15" id="ptI-iw-f8I"/>
-                    <constraint firstItem="fma-XH-ObD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="rM5-R9-tru"/>
+                    <constraint firstAttribute="trailing" secondItem="fma-XH-ObD" secondAttribute="trailing" id="ptI-iw-f8I"/>
+                    <constraint firstItem="fma-XH-ObD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rM5-R9-tru"/>
+                    <constraint firstItem="ZKj-hd-Igo" firstAttribute="top" secondItem="mne-FI-2MJ" secondAttribute="bottom" constant="13" id="u6n-rY-2mc"/>
                     <constraint firstItem="mne-FI-2MJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="uIP-ng-MyQ"/>
                     <constraint firstItem="mne-FI-2MJ" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="wrP-ph-gty"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="6tk-bu-Kxs" secondAttribute="trailing" id="xbp-F1-VaE"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="activityIndicator" destination="eJf-Bv-O9y" id="g0p-9Y-mmj"/>
                 <outlet property="authorLabel" destination="6tk-bu-Kxs" id="MDp-1q-y6q"/>
-                <outlet property="descriptionLabel" destination="27L-DV-iZV" id="UDP-wT-hbC"/>
+                <outlet property="bookmarkImageView" destination="ZKj-hd-Igo" id="cX6-7s-dBW"/>
                 <outlet property="newsImage" destination="fma-XH-ObD" id="4TU-mY-aph"/>
                 <outlet property="sourceLabel" destination="Jjf-vo-ei9" id="Phy-lb-rEZ"/>
                 <outlet property="titleLabel" destination="mne-FI-2MJ" id="6eG-4e-fhi"/>
             </connections>
-            <point key="canvasLocation" x="137.68115942028987" y="206.58482142857142"/>
+            <point key="canvasLocation" x="137.68115942028987" y="169.08482142857142"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="bookmark.fill" catalog="system" width="112" height="128"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

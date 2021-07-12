@@ -8,7 +8,6 @@
 import Foundation
 
 class NewsManager {
-
     
     var newsCurrentPage = 1
     var newsMaxPage = 0

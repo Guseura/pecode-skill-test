@@ -7,13 +7,14 @@
 
 import Foundation
 
-struct News: Codable {
+struct NewsJSON: Codable {
     let source: NewsSource?
     let title: String?
     let author: String?
     let description: String?
     let url: String?
     let urlToImage: String?
+    let content: String?
     
     init() {
         self.title = String()
@@ -22,7 +23,7 @@ struct News: Codable {
         self.url = String()
         self.urlToImage = String()
         self.source = NewsSource()
-        
+        self.content = String()
     }
 }
 
@@ -35,11 +36,11 @@ struct NewsSource: Codable {
 }
 
 struct allNews: Codable {
-    let articles: [News]
+    let articles: [NewsJSON]
     let totalResults: Int
 
     init() {
-        self.articles = [News]()
+        self.articles = [NewsJSON]()
         self.totalResults = Int()
     }
 }

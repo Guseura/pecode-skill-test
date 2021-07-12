@@ -7,8 +7,6 @@
 
 import Foundation
 
-//let newsCategories = ["Business", "Entertainment", "General", "Health", "Science", "Sports", "Technology"]
-
 enum Category: String {
     case business = "Business"
     case entertainment = "Entertainment"
